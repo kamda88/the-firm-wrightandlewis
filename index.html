@@ -1,140 +1,331 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wright & Lewis, LLP | Corporate & International Business Law</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Georgia', 'Times New Roman', serif; color: #2c2c2c; background: #fafafa; line-height: 1.6; }
-        .container { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
-        
-        .header { text-align: center; padding: 60px 0 30px; border-bottom: 3px solid #1a3a5c; }
-        .header h1 { font-size: 32px; color: #1a3a5c; letter-spacing: 1.5px; font-weight: normal; }
-        .header h1 span { display: block; font-size: 14px; color: #777; letter-spacing: 4px; text-transform: uppercase; margin-top: 8px; }
-        .header p { font-size: 13px; color: #888; margin-top: 15px; }
-        
-        .nav { text-align: center; padding: 20px 0; border-bottom: 1px solid #ddd; }
-        .nav a { color: #1a3a5c; text-decoration: none; margin: 0 18px; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; }
-        .nav a:hover { color: #c9a84c; }
-        
-        .hero { padding: 60px 0; text-align: center; }
-        .hero h2 { font-size: 26px; color: #1a3a5c; font-weight: normal; margin-bottom: 20px; }
-        .hero p { max-width: 700px; margin: 0 auto 30px; color: #555; font-size: 15px; }
-        
-        .practice-areas { padding: 40px 0; background: #f0f3f7; }
-        .practice-areas h3 { text-align: center; font-size: 20px; color: #1a3a5c; margin-bottom: 30px; font-weight: normal; letter-spacing: 2px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 700px; margin: 0 auto; }
-        .grid-item { padding: 15px; background: #fff; border-left: 3px solid #c9a84c; }
-        .grid-item h4 { font-size: 14px; color: #1a3a5c; margin-bottom: 5px; }
-        .grid-item p { font-size: 13px; color: #666; }
-        
-        .team { padding: 40px 0; text-align: center; }
-        .team h3 { font-size: 20px; color: #1a3a5c; margin-bottom: 30px; font-weight: normal; letter-spacing: 2px; }
-        .member { display: inline-block; margin: 15px 30px; text-align: center; }
-        .member .initials { width: 80px; height: 80px; border-radius: 50%; background: #1a3a5c; color: #fff; line-height: 80px; font-size: 24px; margin: 0 auto 10px; }
-        .member h4 { font-size: 14px; color: #1a3a5c; }
-        .member p { font-size: 12px; color: #888; }
-        
-        .contact { padding: 40px 0; background: #1a3a5c; color: #fff; text-align: center; }
-        .contact h3 { font-size: 20px; margin-bottom: 20px; font-weight: normal; letter-spacing: 2px; }
-        .contact p { font-size: 14px; margin: 5px 0; opacity: 0.9; }
-        .contact p.highlight { color: #c9a84c; opacity: 1; font-size: 16px; }
-        
-        .footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
-        
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .nav a { margin: 0 10px; font-size: 11px; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wright & Lewis, LLP | Corporate & International Business Law</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: Georgia, serif;
+    color: #2c2c2c;
+    background: #fafafa;
+    line-height: 1.7;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 50px 20px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    padding: 60px 20px 30px;
+    border-bottom: 3px solid #1a3a5c;
+}
+
+.header h1 {
+    font-size: 34px;
+    color: #1a3a5c;
+    letter-spacing: 2px;
+}
+
+.header span {
+    display: block;
+    font-size: 13px;
+    color: #777;
+    letter-spacing: 4px;
+    margin-top: 8px;
+}
+
+/* NAV */
+.nav {
+    text-align: center;
+    padding: 15px;
+}
+
+.nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #1a3a5c;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.nav a:hover {
+    color: #c9a84c;
+}
+
+/* HERO */
+.hero {
+    position: relative;
+    height: 420px;
+    background: url('images/hero.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+}
+
+.hero-content {
+    position: relative;
+    color: #fff;
+    text-align: center;
+    max-width: 700px;
+    padding: 20px;
+}
+
+.hero h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 15px;
+}
+
+/* PRACTICE */
+.practice-areas {
+    background: #f4f6f9;
+}
+
+.practice-areas h3 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #1a3a5c;
+    letter-spacing: 2px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.grid-item {
+    background: #fff;
+    padding: 20px;
+    border-left: 3px solid #c9a84c;
+    transition: 0.3s;
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.grid-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+/* TEAM */
+.team {
+    text-align: center;
+}
+
+.team h3 {
+    margin-bottom: 40px;
+    color: #1a3a5c;
+}
+
+.member {
+    display: inline-block;
+    margin: 20px;
+    width: 200px;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.profile-img:hover {
+    transform: scale(1.05);
+}
+
+.member h4 {
+    color: #1a3a5c;
+}
+
+.member p {
+    font-size: 13px;
+    color: #777;
+}
+
+/* CONTACT */
+.contact {
+    background: #1a3a5c;
+    color: #fff;
+    text-align: center;
+}
+
+.contact h3 {
+    margin-bottom: 20px;
+}
+
+.contact .highlight {
+    color: #c9a84c;
+    font-size: 16px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    padding: 20px;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .hero {
+        height: 320px;
+    }
+
+    .hero h2 {
+        font-size: 22px;
+    }
+
+    .nav a {
+        display: inline-block;
+        margin: 5px;
+    }
+}
+</style>
+
 </head>
+
 <body>
 
+<!-- HEADER -->
+
 <div class="header">
-    <div class="container">
-        <h1>Wright & Lewis, LLP<span>Attorneys at Law</span></h1>
-        <p>Corporate &middot; International Transactions &middot; Mining &amp; Natural Resources</p>
-    </div>
+    <h1>Wright & Lewis, LLP<span>Attorneys at Law</span></h1>
 </div>
+
+<!-- NAV -->
 
 <div class="nav">
     <a href="#">Home</a>
     <a href="#">Practice Areas</a>
     <a href="#">Our Team</a>
-    <a href="#">International</a>
     <a href="#">Contact</a>
 </div>
 
+<!-- HERO -->
+
 <div class="hero">
-    <div class="container">
+    <div class="hero-content">
         <h2>Trusted Counsel for Cross-Border Business</h2>
-        <p>Wright &amp; Lewis, LLP provides sophisticated legal representation to corporate clients in complex international transactions, mergers and acquisitions, mining and natural resources development, and cross-border regulatory compliance. With offices in Los Angeles and San Francisco, we serve clients across Africa, Asia, and the Americas.</p>
+        <p>We provide elite legal advisory in international transactions, mergers & acquisitions, and resource development across global markets.</p>
     </div>
 </div>
+
+<!-- PRACTICE -->
 
 <div class="practice-areas">
-    <div class="container">
-        <h3>Practice Areas</h3>
-        <div class="grid">
-            <div class="grid-item">
-                <h4>International M&amp;A</h4>
-                <p>Cross-border acquisitions, share purchases, asset purchases, joint ventures, and strategic investments.</p>
-            </div>
-            <div class="grid-item">
-                <h4>Mining &amp; Natural Resources</h4>
-                <p>Mineral license transfers, mining agreements, regulatory compliance, and resource project development.</p>
-            </div>
-            <div class="grid-item">
-                <h4>Corporate Law</h4>
-                <p>Entity formation, governance, shareholder agreements, and corporate restructuring.</p>
-            </div>
-            <div class="grid-item">
-                <h4>International Transactions</h4>
-                <p>Cross-border payments, trust account administration, escrow arrangements, and fund disbursement structures.</p>
-            </div>
-        </div>
-    </div>
+<div class="container">
+<h3>Practice Areas</h3>
+
+<div class="grid">
+
+<div class="grid-item">
+<img src="images/ma.jpg" class="grid-img" alt="M&A">
+<h4>International M&A</h4>
+<p>Cross-border acquisitions, joint ventures, and strategic investments.</p>
 </div>
 
-<div class="team">
-    <div class="container">
-        <h3>Our Team</h3>
-        <div class="member">
-            <div class="initials">JH</div>
-            <h4>Brian Wright</h4>
-            <p>Partner &mdash; Corporate &amp; M&amp;A</p>
-            <p style="font-size:11px;color:#aaa;">bwright@wrightandlewis.online</p>
-        </div>
-        <div class="member">
-            <div class="initials">MS</div>
-            <h4>James T Lewis</h4>
-            <p>Partner &mdash; International Transactions</p>
-            <p style="font-size:11px;color:#aaa;">jtlewis@wrightandlewis.online</p>
-        </div>
-        <div class="member">
-            <div class="initials">AC</div>
-            <h4>Andrea M. Cross</h4>
-            <p>Senior Associate &mdash; Mining &amp; Resources</p>
-            <p style="font-size:11px;color:#aaa;">across@wrightandlewis.online</p>
-        </div>
-    </div>
+<div class="grid-item">
+<img src="images/mining.jpg" class="grid-img" alt="Mining">
+<h4>Mining & Resources</h4>
+<p>Licensing, compliance, and resource project structuring.</p>
 </div>
+
+<div class="grid-item">
+<img src="images/corporate.jpg" class="grid-img" alt="Corporate">
+<h4>Corporate Law</h4>
+<p>Entity structuring, governance, and restructuring.</p>
+</div>
+
+<div class="grid-item">
+<img src="images/transactions.jpg" class="grid-img" alt="Transactions">
+<h4>International Transactions</h4>
+<p>Escrow, payments, and cross-border compliance systems.</p>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- TEAM -->
+
+<div class="team container">
+<h3>Our Team</h3>
+
+<div class="member">
+<img src="images/brian.jpg" class="profile-img" alt="Brian Wright">
+<h4>Brian Wright</h4>
+<p>Partner — Corporate & M&A</p>
+</div>
+
+<div class="member">
+<img src="images/lewis.jpg" class="profile-img" alt="James Lewis">
+<h4>James T Lewis</h4>
+<p>Partner — International Transactions</p>
+</div>
+
+<div class="member">
+<img src="images/andrea.jpg" class="profile-img" alt="Andrea Cross">
+<h4>Andrea M. Cross</h4>
+<p>Senior Associate — Mining & Resources</p>
+</div>
+
+</div>
+
+<!-- CONTACT -->
 
 <div class="contact">
-    <div class="container">
-        <h3>Contact</h3>
-        <p class="highlight">Los Angeles Office</p>
-        <p>601 S. Figueroa Street, Suite 1950</p>
-        <p>Los Angeles, CA 90017</p>
-        <p>Tel: (213) 452-8800</p>
-        <p>Email: info@wrightandlewis.online</p>
-        <p style="margin-top:15px;font-size:12px;opacity:0.7;">San Francisco Office &middot; 50 California Street, Suite 1500 &middot; San Francisco, CA 94111</p>
-    </div>
+<div class="container">
+<h3>Contact</h3>
+
+<p class="highlight">Los Angeles Office</p>
+<p>601 S. Figueroa Street, Suite 1950</p>
+<p>Los Angeles, CA 90017</p>
+<p>Tel: (213) 452-8800</p>
+<p>Email: info@wrightandlewis.online</p>
+
+<p style="margin-top:15px;font-size:12px;opacity:0.7;">
+San Francisco Office · 50 California Street, Suite 1500
+</p>
+
+</div>
 </div>
 
+<!-- FOOTER -->
+
 <div class="footer">
-    <div class="container">
-        &copy; 2017 Wright &amp; Lewis, LLP. All rights reserved. &middot; Attorney Advertising &middot; Prior results do not guarantee a similar outcome.
-    </div>
+© 2017 Wright & Lewis, LLP · Attorney Advertising
 </div>
 
 </body>
 </html>
+
