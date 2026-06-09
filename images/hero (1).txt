@@ -1,0 +1,8 @@
+hero.jpg
+ma.jpg
+mining.jpg
+corporate.jpg
+transactions.jpg
+brian.jpg
+lewis.jpg
+andrea.jpg
