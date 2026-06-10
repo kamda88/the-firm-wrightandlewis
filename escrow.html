@@ -15,7 +15,6 @@ body {
     color:#2c2c2c;
 }
 
-/* HEADER */
 .header {
     text-align:center;
     padding:50px 20px;
@@ -24,7 +23,6 @@ body {
 
 .header h1 { color:#1a3a5c; }
 
-/* NAV */
 .nav {
     text-align:center;
     padding:15px;
@@ -38,14 +36,12 @@ body {
 }
 .nav a:hover { color:#c9a84c; }
 
-/* CONTAINER */
 .container {
     max-width:900px;
     margin:auto;
     padding:40px 20px;
 }
 
-/* FORM */
 .form-box {
     background:#fff;
     padding:30px;
@@ -58,7 +54,6 @@ body {
     color:#1a3a5c;
 }
 
-/* INPUTS */
 .input-group { margin-bottom:20px; }
 
 .input-group label {
@@ -76,7 +71,6 @@ body {
     font-family:inherit;
 }
 
-/* GRID */
 .grid {
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -85,19 +79,21 @@ body {
 
 .full { grid-column: span 2; }
 
-/* BUTTON */
 button {
     background:#1a3a5c;
     color:#fff;
     padding:12px;
     border:none;
     cursor:pointer;
-    width:100%;
     font-size:14px;
 }
 button:hover { background:#c9a84c; }
 
-/* INFO BOX */
+button:disabled {
+    opacity:0.5;
+    cursor:not-allowed;
+}
+
 .info {
     background:#f4f6f9;
     padding:20px;
@@ -106,7 +102,6 @@ button:hover { background:#c9a84c; }
     font-size:13px;
 }
 
-/* WALLET DISPLAY */
 .wallet-box {
     background:#eef3f8;
     padding:15px;
@@ -114,7 +109,24 @@ button:hover { background:#c9a84c; }
     font-size:13px;
 }
 
-/* FOOTER */
+/* Indicator */
+.indicator {
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:red;
+    position:relative;
+}
+
+.tick::after {
+    content: "✓";
+    color:white;
+    position:absolute;
+    left:4px;
+    top:-1px;
+    font-size:14px;
+}
+
 .footer {
     text-align:center;
     font-size:11px;
@@ -134,9 +146,6 @@ button:hover { background:#c9a84c; }
 
 <div class="nav">
     <a href="index.html">Home</a>
-    <a href="#">Practice Areas</a>
-    <a href="#">Our Team</a>
-    <a href="#">Contact</a>
 </div>
 
 <div class="container">
@@ -187,48 +196,44 @@ Funds are deposited into a controlled escrow wallet. Release occurs only upon mu
 <input type="number" name="amount" placeholder="e.g. 1.5" required>
 </div>
 
-<!-- WALLET DISPLAY -->
-
 <div class="input-group full">
 <label>Escrow Wallet Address</label>
-<div class="wallet-box" id="walletDisplay">
-Send your crypto amount to this escrow wallet: a1ec8d4...
+<div class="wallet-box" id="walletDisplay"></div>
 </div>
+
+<div class="input-group full">
+<label>Payment Status</label>
+<div class="wallet-box" id="paymentStatus">Awaiting deposit...</div>
 </div>
 
 <div class="input-group full">
 <label>Depositor Wallet Address</label>
-<input type="text" name="depositor_wallet" placeholder="Enter wallet address" required>
+<input type="text" name="depositor_wallet" required>
 </div>
 
 <div class="input-group full">
 <label>Escrow Release Conditions</label>
-<textarea name="conditions" rows="4" placeholder="Define when funds should be released..." required></textarea>
+<textarea name="conditions" rows="4" required></textarea>
 </div>
 
 <div class="input-group full">
 <label>Terms of Engagement</label>
-<textarea name="terms" rows="5" placeholder="Legal terms, dispute resolution, obligations..." required></textarea>
-</div>
-
-<div class="input-group">
-<label>Transaction Reference ID</label>
-<input type="text" name="reference_id" placeholder="Optional tracking ID">
-</div>
-
-<div class="input-group">
-<label>Escrow Duration</label>
-<input type="text" name="duration" placeholder="e.g. 7 days / milestone based">
-</div>
-
-<div class="input-group full">
-<label>Additional Notes</label>
-<textarea name="notes" rows="3"></textarea>
+<textarea name="terms" rows="5" required></textarea>
 </div>
 
 </div>
 
-<button type="submit">Initiate Escrow</button>
+<!-- BUTTON + INDICATOR -->
+
+<div style="display:flex;align-items:center;gap:15px;margin-top:20px;">
+<button type="submit" id="submitBtn" disabled>Initiate Escrow</button>
+
+<div id="paymentIndicator" class="indicator"></div>
+
+<span id="paymentText" style="font-size:12px;color:#777;">
+Awaiting payment
+</span>
+</div>
 
 </form>
 </div>
@@ -240,7 +245,7 @@ Send your crypto amount to this escrow wallet: a1ec8d4...
 </div>
 
 <script>
-// WALLET ADDRESSES (EDIT LATER)
+// WALLET CONFIG
 const wallets = {
     btc: "a1ec8d4BTCxxxxxxx",
     eth: "0xA1ec8d4ETHxxxxxxx",
@@ -249,39 +254,78 @@ const wallets = {
 
 const select = document.getElementById("cryptoSelect");
 const display = document.getElementById("walletDisplay");
+const indicator = document.getElementById("paymentIndicator");
+const statusText = document.getElementById("paymentText");
+const button = document.getElementById("submitBtn");
 
+let expectedAmount = 0;
+let paymentConfirmed = false;
+
+// UPDATE WALLET DISPLAY
 function updateWallet() {
     const wallet = wallets[select.value];
-    display.innerHTML = 
+    display.innerHTML =
     "Send your crypto amount to this escrow wallet: <strong>" + wallet + "</strong>";
 }
-
 select.addEventListener("change", updateWallet);
 updateWallet();
 
+// TRACK AMOUNT
+document.querySelector('input[name="amount"]').addEventListener("input", function(){
+    expectedAmount = this.value;
+});
 
-// FORM SUBMISSION (CONNECT TO BACKEND)
-document.getElementById("escrowForm").addEventListener("submit", async function(e) {
+// CHECK PAYMENT
+async function checkPayment() {
+    if (!expectedAmount) return;
+
+    try {
+        const res = await fetch(`https://your-worker-endpoint/check?crypto=${select.value}&amount=${expectedAmount}`);
+        const data = await res.json();
+
+        if (data.paid && !paymentConfirmed) {
+            paymentConfirmed = true;
+
+            indicator.style.background = "green";
+            indicator.classList.add("tick");
+
+            statusText.innerHTML = "Payment detected";
+            statusText.style.color = "green";
+
+            document.getElementById("paymentStatus").innerHTML =
+            "✅ Funds received. You may now initiate escrow.";
+
+            button.disabled = false;
+        }
+
+    } catch (err) {
+        console.log("Check failed");
+    }
+}
+
+// POLL EVERY 10s
+setInterval(checkPayment, 10000);
+
+// FORM SUBMIT CONTROL
+document.getElementById("escrowForm").addEventListener("submit", async function(e){
     e.preventDefault();
+
+    if (!paymentConfirmed) {
+        alert("⚠️ Please send the crypto amount before initiating escrow.");
+        return;
+    }
 
     const data = Object.fromEntries(new FormData(this));
 
     try {
-        const res = await fetch("https://your-backend-endpoint.com/escrow", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+        await fetch("https://your-worker-endpoint/create", {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(data)
         });
 
-        if(res.ok){
-            alert("Escrow request submitted successfully.");
-            this.reset();
-            updateWallet();
-        } else {
-            alert("Submission failed.");
-        }
-
-    } catch(err){
+        alert("✅ Escrow successfully initiated.");
+    } catch {
         alert("Server error.");
     }
 });
