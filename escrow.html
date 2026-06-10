@@ -85,6 +85,7 @@ button {
     padding:12px;
     border:none;
     cursor:pointer;
+    width:100%;
     font-size:14px;
 }
 button:hover { background:#c9a84c; }
@@ -119,7 +120,7 @@ button:disabled {
 }
 
 .tick::after {
-    content: "✓";
+    content:"✓";
     color:white;
     position:absolute;
     left:4px;
@@ -146,6 +147,9 @@ button:disabled {
 
 <div class="nav">
     <a href="index.html">Home</a>
+    <a href="#">Practice Areas</a>
+    <a href="#">Our Team</a>
+    <a href="#">Contact</a>
 </div>
 
 <div class="container">
@@ -221,6 +225,21 @@ Funds are deposited into a controlled escrow wallet. Release occurs only upon mu
 <textarea name="terms" rows="5" required></textarea>
 </div>
 
+<div class="input-group">
+<label>Transaction Reference ID</label>
+<input type="text" name="reference_id">
+</div>
+
+<div class="input-group">
+<label>Escrow Duration</label>
+<input type="text" name="duration">
+</div>
+
+<div class="input-group full">
+<label>Additional Notes</label>
+<textarea name="notes" rows="3"></textarea>
+</div>
+
 </div>
 
 <!-- BUTTON + INDICATOR -->
@@ -261,11 +280,10 @@ const button = document.getElementById("submitBtn");
 let expectedAmount = 0;
 let paymentConfirmed = false;
 
-// UPDATE WALLET DISPLAY
+// WALLET DISPLAY
 function updateWallet() {
-    const wallet = wallets[select.value];
     display.innerHTML =
-    "Send your crypto amount to this escrow wallet: <strong>" + wallet + "</strong>";
+    "Send your crypto amount to this escrow wallet: <strong>" + wallets[select.value] + "</strong>";
 }
 select.addEventListener("change", updateWallet);
 updateWallet();
@@ -298,27 +316,25 @@ async function checkPayment() {
             button.disabled = false;
         }
 
-    } catch (err) {
-        console.log("Check failed");
-    }
+    } catch (err) {}
 }
 
 // POLL EVERY 10s
 setInterval(checkPayment, 10000);
 
-// FORM SUBMIT CONTROL
+// SUBMIT CONTROL
 document.getElementById("escrowForm").addEventListener("submit", async function(e){
     e.preventDefault();
 
     if (!paymentConfirmed) {
-        alert("⚠️ Please send the crypto amount before initiating escrow.");
+        alert("⚠️ Please complete payment before initiating escrow.");
         return;
     }
 
     const data = Object.fromEntries(new FormData(this));
 
     try {
-        await fetch("https://your-worker-endpoint/create", {
+        await fetch("https://your-backend-endpoint.com/escrow", {
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify(data)
