@@ -290,7 +290,8 @@ updateWallet();
 
 // TRACK AMOUNT
 document.querySelector('input[name="amount"]').addEventListener("input", function(){
-    expectedAmount = this.value;
+    expectedAmount = parseFloat(this.value) || 0;
+	checkPayment(); // 🔥 force immediate check
 });
 
 // CHECK PAYMENT
@@ -303,7 +304,7 @@ async function checkPayment() {
 
         console.log("Payment response:", data); // DEBUG
 
-        if (data.paid && !paymentConfirmed) {
+        if (data.paid) {
             paymentConfirmed = true;
 
             indicator.style.background = "green";
