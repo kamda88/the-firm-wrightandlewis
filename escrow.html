@@ -298,8 +298,10 @@ async function checkPayment() {
     if (!expectedAmount) return;
 
     try {
-        const res = await fetch(`https://your-worker-endpoint/check?crypto=${select.value}&amount=${expectedAmount}`);
+        const res = await fetch(`https://escrow-api.skilonz848.workers.dev/check?amount=${expectedAmount}`);
         const data = await res.json();
+
+        console.log("Payment response:", data); // DEBUG
 
         if (data.paid && !paymentConfirmed) {
             paymentConfirmed = true;
@@ -316,7 +318,9 @@ async function checkPayment() {
             button.disabled = false;
         }
 
-    } catch (err) {}
+    } catch (err) {
+        console.error("Payment check failed:", err);
+    }
 }
 
 // POLL EVERY 10s
