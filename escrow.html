@@ -191,7 +191,8 @@ Funds are deposited into a controlled escrow wallet. Release occurs only upon mu
 <select id="cryptoSelect" name="crypto">
 <option value="btc">Bitcoin (BTC)</option>
 <option value="eth">Ethereum (ETH)</option>
-<option value="usdt">USDT</option>
+<option value="usdt">USDT (ERC20)</option>
+<option value="ltc">Litecoin (LTC)</option>
 </select>
 </div>
 
@@ -268,7 +269,8 @@ Awaiting payment
 const wallets = {
     btc: "1P1ux19JAn8ekdT5SHnVGusJcyWz7NwNKu",
     eth: "0x27aE72091D792D1e4856d84dfD167C8AbbeC3170",
-    usdt: "TXA1ec8d4USDTxxxx"
+    usdt: "0x27aE72091D792D1e4856d84dfD167C8AbbeC3170", // ERC20 uses ETH wallet
+    ltc: "YourLitecoinAddress"
 };
 
 const select = document.getElementById("cryptoSelect");
@@ -299,7 +301,7 @@ async function checkPayment() {
     if (!expectedAmount) return;
 
     try {
-        const res = await fetch(`https://escrow-api.skilonz848.workers.dev/check?amount=${expectedAmount}`);
+        const res = await fetch(`https://escrow-api.skilonz848.workers.dev/check?crypto=${select.value}&amount=${expectedAmount}`);
         const data = await res.json();
 
         console.log("Payment response:", data); // DEBUG
