@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Wright & Lewis, LLP</title>
+
+  <style>
+    body { 
+      font-family: Georgia, serif; 
+      background: #fafafa; 
+      color: #2c2c2c; 
+      margin: 0;
+      padding: 0;
+    }
+
+    .header { 
+      text-align: center; 
+      padding: 40px; 
+      border-bottom: 3px solid #1a3a5c; 
+    }
+
+    .nav { 
+      text-align: center; 
+      padding: 15px; 
+      background: #f0f0f0;
+    }
+    .nav a { 
+      margin: 0 15px; 
+      text-decoration: none; 
+      color: #1a3a5c; 
+      font-weight: bold;
+    }
+    .nav a:hover {
+      color: #c9a84c;
+    }
+
+    .container { 
+      text-align: center; 
+      padding: 40px; 
+    }
+
+    .highlight { 
+      color: #c9a84c; 
+      font-size: 16px; 
+      font-weight: bold;
+    }
+
+    form {
+      margin-top: 30px;
+      display: inline-block;
+      text-align: left;
+    }
+    input, textarea {
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: Georgia, serif;
+    }
+    textarea {
+      height: 120px;
+      resize: vertical;
+    }
+    button {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #c9a84c;
+      color: #1a3a5c;
+    }
+
+    #responseMsg {
+      margin-top: 15px;
+      font-size: 14px;
+      color: green;
+    }
+
+    .footer { 
+      text-align: center; 
+      font-size: 11px; 
+      padding: 20px; 
+      color: #999; 
+      border-top: 1px solid #ddd;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Contact</h1>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="practice.html">Practice Areas</a>
+    <a href="team.html">Our Team</a>
+    <a href="contact.html">Contact</a>
+    <a href="escrow.html">Escrow</a>
+  </div>
+
+  <div class="container">
+    <p class="highlight">Los Angeles Office</p>
+    <p>601 S. Figueroa Street, Suite 1950</p>
+    <p>Los Angeles, CA 90017</p>
+    <p>Tel: (213) 452-8800</p>
+    <p>Email: <a href="mailto:info@wrightandlewis.com">info@wrightandlewis.com</a></p>
+
+    <!-- Contact Form -->
+    <form id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required><br><br>
+      <input type="email" name="email" placeholder="Your Email" required><br><br>
+      <textarea name="message" placeholder="Your Message" required></textarea><br><br>
+      <button type="submit">Send Message</button>
+    </form>
+
+    <p id="responseMsg"></p>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 Wright & Lewis, LLP. All rights reserved.</p>
+  </div>
+
+  <!-- Backend Integration -->
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", async function(e){
+        e.preventDefault();
+
+        const data = Object.fromEntries(new FormData(this));
+
+        try {
+            const res = await fetch("https://escrow-api.skilonz848.workers.dev/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                document.getElementById("responseMsg").innerText = "Message sent successfully.";
+                document.getElementById("responseMsg").style.color = "green";
+                this.reset();
+            } else {
+                document.getElementById("responseMsg").innerText = "Failed to send message.";
+                document.getElementById("responseMsg").style.color = "red";
+            }
+
+        } catch {
+            document.getElementById("responseMsg").innerText = "Server error.";
+            document.getElementById("responseMsg").style.color = "red";
+        }
+    });
+  </script>
+
+</body>
+</html>
